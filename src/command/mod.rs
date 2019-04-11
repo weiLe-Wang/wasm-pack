@@ -39,9 +39,15 @@ pub enum Command {
     /// 🐑 create a new project with a template
     Generate {
         /// The URL to the template
-        template: Option<String>,
+        #[structopt(
+            long = "template",
+            short = "temp",
+            default_value = "https://github.com/rustwasm/wasm-pack-template"
+        )]
+        template: String,
         /// The name of the project
-        name: Option<String>,
+        #[structopt(long = "name", short = "n", default_value = "hello-wasm")]
+        name: String,
     },
 
     #[structopt(name = "publish")]
