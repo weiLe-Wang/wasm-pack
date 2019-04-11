@@ -1,9 +1,13 @@
+//! Functionality related to running `cargo-generate`.
+
 use binary_install::Download;
 use child;
 use emoji;
 use failure::{self, ResultExt};
 use std::process::Command;
 
+/// Run `cargo generate` in the current directory to create a new
+/// project from a template
 pub fn generate(template: &str, name: &str, download: &Download) -> Result<(), failure::Error> {
     let bin_path = download.binary("cargo-generate")?;
     let cargo_generate = format!(

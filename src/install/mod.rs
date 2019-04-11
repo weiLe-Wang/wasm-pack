@@ -1,3 +1,5 @@
+//! Functionality related to installing prebuilt binaries and/or running cargo install.
+
 use self::krate::Krate;
 use binary_install::{Cache, Download};
 use child;
