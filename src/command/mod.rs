@@ -1,6 +1,7 @@
 //! CLI command structures, parsing, and execution.
 
 pub mod build;
+mod generate;
 mod login;
 mod pack;
 /// Data structures and functions for publishing a package.
@@ -9,6 +10,7 @@ pub mod test;
 pub mod utils;
 
 use self::build::{Build, BuildOptions};
+use self::generate::generate;
 use self::login::login;
 use self::pack::pack;
 use self::publish::{access::Access, publish};
@@ -31,6 +33,15 @@ pub enum Command {
         /// The path to the Rust crate.
         #[structopt(parse(from_os_str))]
         path: Option<PathBuf>,
+    },
+
+    #[structopt(name = "generate")]
+    /// 🐑 create a new project with a template
+    Generate {
+        /// The URL to the template
+        template: Option<String>,
+        /// The name of the project
+        name: Option<String>,
     },
 
     #[structopt(name = "publish")]
@@ -99,6 +110,12 @@ pub fn run_wasm_pack(command: Command) -> result::Result<(), Error> {
             info!("Running pack command...");
             info!("Path: {:?}", &path);
             pack(path)
+        }
+        Command::Generate { template, name } => {
+            info!("Running generate command...");
+            info!("Template: {:?}", &template);
+            info!("Name: {:?}", &name);
+            generate(template, name)
         }
         Command::Publish {
             target,
