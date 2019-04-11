@@ -285,7 +285,7 @@ impl Test {
         };
 
         let dl = install::install(
-            "wasm-bindegn",
+            "wasm-bindgen",
             &self.cache,
             &bindgen_version,
             install_permitted,
