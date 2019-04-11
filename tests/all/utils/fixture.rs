@@ -220,12 +220,12 @@ impl Fixture {
 
         let download = || {
             if let Ok(download) =
-                wasm_pack::bindgen::download_prebuilt_wasm_bindgen(&cache, version, true)
+                wasm_pack::install::download_prebuilt("wasm-bindgen", &cache, version, true)
             {
                 return Ok(download);
             }
 
-            wasm_pack::bindgen::cargo_install_wasm_bindgen(&cache, version, true)
+            wasm_pack::install::cargo_install("wasm-bindgen", &cache, version, true)
         };
 
         // Only one thread can perform the actual download, and then afterwards
