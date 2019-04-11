@@ -11,8 +11,8 @@ extern crate structopt;
 extern crate tempfile;
 extern crate wasm_pack;
 
-mod download;
 mod build;
+mod download;
 mod license;
 mod lockfile;
 mod manifest;
