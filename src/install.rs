@@ -57,7 +57,7 @@ pub fn install(
 fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> bool {
     let mut cmd = Command::new(path);
     cmd.arg("--version");
-    child::run_capture_stdout(cmd, "wasm-bindgen")
+    child::run_capture_stdout(cmd, tool)
         .map(|stdout| {
             stdout
                 .trim()
@@ -65,7 +65,8 @@ fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> bool {
                 .nth(1)
                 .map(|v| {
                     info!(
-                        "Checking installed `wasm-bindgen` version == expected version: {} == {}",
+                        "Checking installed `{}` version == expected version: {} == {}",
+                        tool,
                         v, expected_version
                     );
                     v == expected_version
@@ -83,10 +84,11 @@ pub fn download_prebuilt(
     install_permitted: bool,
 ) -> Result<Download, failure::Error> {
     let url = match prebuilt_url(tool, version) {
-        Some(url) => url,
-        None => bail!(
-            "no prebuilt {} binaries are available for this platform",
-            tool
+        Ok(url) => url,
+        Err(e) => bail!(
+            "no prebuilt {} binaries are available for this platform: {}",
+            tool,
+            e,
         ),
     };
     match tool {
@@ -104,12 +106,13 @@ pub fn download_prebuilt(
                 None => bail!("cargo-generate v{} is not installed!", version),
             }
         }
+        _ => bail!("Unrecognized tool name!")
     }
 }
 
 /// Returns the URL of a precompiled version of wasm-bindgen, if we have one
 /// available for our host platform.
-fn prebuilt_url(tool: &str, version: &str) -> Option<String> {
+fn prebuilt_url(tool: &str, version: &str) -> Result<String, failure::Error> {
     let target = if target::LINUX && target::x86_64 {
         "x86_64-unknown-linux-musl"
     } else if target::MACOS && target::x86_64 {
@@ -117,24 +120,25 @@ fn prebuilt_url(tool: &str, version: &str) -> Option<String> {
     } else if target::WINDOWS && target::x86_64 {
         "x86_64-pc-windows-msvc"
     } else {
-        return None;
+        bail!("Unrecognized target!")
     };
 
     match tool {
         "wasm-bindgen" => {
-            Some(format!(
+            Ok(format!(
                 "https://github.com/rustwasm/wasm-bindgen/releases/download/{0}/wasm-bindgen-{0}-{1}.tar.gz",
                 version,
                 target
             ))
         },
         "cargo-generate" => {
-            Some(format!(
+            Ok(format!(
                 "https://github.com/ashleygwilliams/cargo-generate/releases/download/v{0}/cargo-generate-v{0}-{1}.tar.gz",
                 version,
                 target
             ))
         }
+        _ => bail!("Unrecognized tool name!")
     }
 }
 
@@ -174,7 +178,7 @@ pub fn cargo_install(
     debug!("cargo installing {} to tempdir: {}", tool, tmp.display(),);
 
     let context = format!("failed to create temp dir for `cargo install {}`", tool);
-    fs::create_dir_all(&tmp).context(&context)?;
+    fs::create_dir_all(&tmp).context(context)?;
 
     let crate_name = if tool == "wasm-bindgen" {
         "wasm-bindgen-cli"
@@ -191,7 +195,7 @@ pub fn cargo_install(
         .arg(&tmp);
 
     let context = format!("Installing {} with cargo", tool);
-    child::run(cmd, "cargo install").context(&context)?;
+    child::run(cmd, "cargo install").context(context)?;
 
     // `cargo install` will put the installed binaries in `$root/bin/*`, but we
     // just want them in `$root/*` directly (which matches how the tarballs are
