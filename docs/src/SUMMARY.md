@@ -5,6 +5,7 @@
   - [npm (optional)](./prerequisites/npm.md)
   - [Non-`rustup` setups](./prerequisites/non-rustup-setups.md)
 - [Commands](./commands/index.md)
+  - [`generate`](./commands/generate.md)
   - [`build`](./commands/build.md)
   - [`test`](./commands/test.md)
   - [`pack` and `publish`](./commands/pack-and-publish.md)
