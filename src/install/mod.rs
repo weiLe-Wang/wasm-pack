@@ -2,6 +2,7 @@ use binary_install::{Cache, Download};
 use child;
 use emoji;
 use failure::{self, ResultExt};
+use self::krate::Krate;
 use log::debug;
 use log::{info, warn};
 use std::env;
@@ -11,6 +12,8 @@ use std::process::Command;
 use target;
 use which::which;
 use PBAR;
+
+mod krate;
 
 /// Install a cargo CLI tool
 ///
@@ -31,7 +34,7 @@ pub fn install(
     // `cargo install`, for example.
     if let Ok(path) = which(tool) {
         debug!("found global {} binary at: {}", tool, path.display());
-        if check_version(tool, &path, version) {
+        if check_version(tool, &path, version)? {
             return Ok(Download::at(path.parent().unwrap()));
         }
     }
@@ -54,7 +57,14 @@ pub fn install(
 }
 
 /// Check if the tool dependency is locally satisfied.
-fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> bool {
+fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> Result<bool, failure::Error> {
+    let expected_version = if expected_version == "latest" {
+        let krate = Krate::new(tool)?;
+        krate.max_version
+    } else {
+        expected_version.to_string()
+    };
+
     let mut cmd = Command::new(path);
     cmd.arg("--version");
     child::run_capture_stdout(cmd, tool)
@@ -67,13 +77,13 @@ fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> bool {
                     info!(
                         "Checking installed `{}` version == expected version: {} == {}",
                         tool,
-                        v, expected_version
+                        v, &expected_version
                     );
-                    v == expected_version
+                    Ok(v == expected_version)
                 })
-                .unwrap_or(false)
+                .unwrap_or(Ok(false))
         })
-        .unwrap_or(false)
+        .unwrap_or(Ok(false))
 }
 
 /// Downloads a precompiled copy of the tool, if available.
