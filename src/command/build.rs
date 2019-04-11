@@ -7,6 +7,7 @@ use cache;
 use command::utils::{create_pkg_dir, set_crate_path};
 use emoji;
 use failure::Error;
+use install;
 use license;
 use lockfile::Lockfile;
 use log::info;
@@ -371,8 +372,12 @@ impl Build {
             BuildMode::Force => true,
             BuildMode::Noinstall => false,
         };
-        let bindgen =
-            bindgen::install_wasm_bindgen(&self.cache, &bindgen_version, install_permitted)?;
+        let bindgen = install::install(
+            "wasm-bindgen",
+            &self.cache,
+            &bindgen_version,
+            install_permitted,
+        )?;
         self.bindgen = Some(bindgen);
         info!("Installing wasm-bindgen-cli was successful.");
         Ok(())

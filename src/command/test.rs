@@ -2,12 +2,12 @@
 
 use super::build::BuildMode;
 use binary_install::Cache;
-use bindgen;
 use build;
 use cache;
 use command::utils::set_crate_path;
 use console::style;
 use failure::Error;
+use install;
 use lockfile::Lockfile;
 use log::info;
 use manifest;
@@ -284,7 +284,12 @@ impl Test {
             }
         };
 
-        let dl = bindgen::install_wasm_bindgen(&self.cache, &bindgen_version, install_permitted)?;
+        let dl = install::install(
+            "wasm-bindegn",
+            &self.cache,
+            &bindgen_version,
+            install_permitted,
+        )?;
 
         self.test_runner_path = Some(dl.binary("wasm-bindgen-test-runner")?);
 
