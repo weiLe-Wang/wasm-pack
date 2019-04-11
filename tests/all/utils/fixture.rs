@@ -8,6 +8,7 @@ use std::sync::{MutexGuard, Once, ONCE_INIT};
 use std::thread;
 use tempfile::TempDir;
 use wasm_pack;
+use wasm_pack::install::{self, Tool};
 
 /// A test fixture in a temporary directory.
 pub struct Fixture {
@@ -220,12 +221,12 @@ impl Fixture {
 
         let download = || {
             if let Ok(download) =
-                wasm_pack::install::download_prebuilt("wasm-bindgen", &cache, version, true)
+                install::download_prebuilt(&Tool::WasmBindgen, &cache, version, true)
             {
                 return Ok(download);
             }
 
-            wasm_pack::install::cargo_install("wasm-bindgen", &cache, version, true)
+            install::cargo_install(Tool::WasmBindgen, &cache, version, true)
         };
 
         // Only one thread can perform the actual download, and then afterwards

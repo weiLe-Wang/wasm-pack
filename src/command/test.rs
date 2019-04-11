@@ -7,7 +7,7 @@ use cache;
 use command::utils::set_crate_path;
 use console::style;
 use failure::Error;
-use install;
+use install::{self, Tool};
 use lockfile::Lockfile;
 use log::info;
 use manifest;
@@ -285,7 +285,7 @@ impl Test {
         };
 
         let dl = install::install(
-            "wasm-bindgen",
+            Tool::WasmBindgen,
             &self.cache,
             &bindgen_version,
             install_permitted,

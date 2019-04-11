@@ -7,7 +7,7 @@ use cache;
 use command::utils::{create_pkg_dir, set_crate_path};
 use emoji;
 use failure::Error;
-use install;
+use install::{self, Tool};
 use license;
 use lockfile::Lockfile;
 use log::info;
@@ -373,7 +373,7 @@ impl Build {
             BuildMode::Noinstall => false,
         };
         let bindgen = install::install(
-            "wasm-bindgen",
+            Tool::WasmBindgen,
             &self.cache,
             &bindgen_version,
             install_permitted,

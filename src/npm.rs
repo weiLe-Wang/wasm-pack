@@ -20,10 +20,7 @@ pub fn npm_pack(path: &str) -> Result<(), failure::Error> {
 pub fn npm_publish(path: &str, access: Option<Access>) -> Result<(), failure::Error> {
     let mut cmd = child::new_command("npm");
     match access {
-        Some(a) => cmd
-            .current_dir(path)
-            .arg("publish")
-            .arg(&a.to_string()),
+        Some(a) => cmd.current_dir(path).arg("publish").arg(&a.to_string()),
         None => cmd.current_dir(path).arg("publish"),
     };
 
