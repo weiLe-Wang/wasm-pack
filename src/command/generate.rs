@@ -1,7 +1,7 @@
-use install;
 use cache;
 use failure::Error;
 use generate;
+use install;
 use log::info;
 use std::result;
 use PBAR;

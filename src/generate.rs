@@ -13,7 +13,6 @@ pub fn generate(template: &str, name: &str, download: &Download) -> Result<(), f
         name
     );
     let cmd = Command::new(cargo_generate);
-    
 
     println!(
         "{} Generating a new rustwasm worker project with name '{}'...",

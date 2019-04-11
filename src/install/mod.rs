@@ -1,8 +1,8 @@
+use self::krate::Krate;
 use binary_install::{Cache, Download};
 use child;
 use emoji;
 use failure::{self, ResultExt};
-use self::krate::Krate;
 use log::debug;
 use log::{info, warn};
 use std::env;
@@ -57,7 +57,11 @@ pub fn install(
 }
 
 /// Check if the tool dependency is locally satisfied.
-fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> Result<bool, failure::Error> {
+fn check_version(
+    tool: &str,
+    path: &PathBuf,
+    expected_version: &str,
+) -> Result<bool, failure::Error> {
     let expected_version = if expected_version == "latest" {
         let krate = Krate::new(tool)?;
         krate.max_version
@@ -76,8 +80,7 @@ fn check_version(tool: &str, path: &PathBuf, expected_version: &str) -> Result<b
                 .map(|v| {
                     info!(
                         "Checking installed `{}` version == expected version: {} == {}",
-                        tool,
-                        v, &expected_version
+                        tool, v, &expected_version
                     );
                     Ok(v == expected_version)
                 })
@@ -116,7 +119,7 @@ pub fn download_prebuilt(
                 None => bail!("cargo-generate v{} is not installed!", version),
             }
         }
-        _ => bail!("Unrecognized tool name!")
+        _ => bail!("Unrecognized tool name!"),
     }
 }
 
