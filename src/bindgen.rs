@@ -16,7 +16,7 @@ pub fn wasm_bindgen_build(
     out_dir: &Path,
     out_name: &Option<String>,
     disable_dts: bool,
-    target: &Target,
+    target: Target,
     profile: BuildProfile,
 ) -> Result<(), failure::Error> {
     let release_or_debug = match profile {

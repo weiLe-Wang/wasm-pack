@@ -339,7 +339,7 @@ impl Build {
             &self.out_dir,
             &self.scope,
             self.disable_dts,
-            &self.target,
+            self.target,
         )?;
         info!(
             "Wrote a package.json at {:#?}.",
@@ -391,7 +391,7 @@ impl Build {
             &self.out_dir,
             &self.out_name,
             self.disable_dts,
-            &self.target,
+            self.target,
             self.profile,
         )?;
         info!("wasm bindings were built at {:#?}.", &self.out_dir);
