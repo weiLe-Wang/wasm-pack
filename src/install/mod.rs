@@ -16,7 +16,9 @@ use which::which;
 use PBAR;
 
 mod krate;
+mod mode;
 mod tool;
+pub use self::mode::InstallMode;
 pub use self::tool::Tool;
 
 /// Install a cargo CLI tool

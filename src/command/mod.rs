@@ -15,6 +15,7 @@ use self::login::login;
 use self::pack::pack;
 use self::publish::{access::Access, publish};
 use self::test::{Test, TestOptions};
+use crate::install::InstallMode;
 use failure::Error;
 use log::info;
 use std::path::PathBuf;
@@ -48,6 +49,9 @@ pub enum Command {
         /// The name of the project
         #[structopt(long = "name", short = "n", default_value = "hello-wasm")]
         name: String,
+        #[structopt(long = "mode", short = "m", default_value = "normal")]
+        /// Should we install or check the presence of binary tools. [possible values: no-install, normal, force]
+        mode: InstallMode,
     },
 
     #[structopt(name = "publish")]
@@ -117,11 +121,15 @@ pub fn run_wasm_pack(command: Command) -> result::Result<(), Error> {
             info!("Path: {:?}", &path);
             pack(path)
         }
-        Command::Generate { template, name } => {
+        Command::Generate {
+            template,
+            name,
+            mode,
+        } => {
             info!("Running generate command...");
             info!("Template: {:?}", &template);
             info!("Name: {:?}", &name);
-            generate(template, name)
+            generate(template, name, mode.install_permitted())
         }
         Command::Publish {
             target,
