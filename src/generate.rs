@@ -10,13 +10,10 @@ use std::process::Command;
 /// project from a template
 pub fn generate(template: &str, name: &str, download: &Download) -> Result<(), failure::Error> {
     let bin_path = download.binary("cargo-generate")?;
-    let cargo_generate = format!(
-        "{} generate --git {} --name {}",
-        bin_path.to_string_lossy(),
-        template,
-        name
-    );
-    let cmd = Command::new(cargo_generate);
+    let mut cmd = Command::new(&bin_path);
+    cmd.arg("generate");
+    cmd.arg("--git").arg(&template);
+    cmd.arg("--name").arg(&name);
 
     println!(
         "{} Generating a new rustwasm worker project with name '{}'...",

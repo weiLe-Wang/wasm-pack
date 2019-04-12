@@ -5,7 +5,7 @@ use utils;
 #[test]
 fn generate_with_defaults() {
     let fixture = utils::fixture::not_a_crate();
-    let cmd = fixture.wasm_pack().arg("generate").assert().failure();
+    let cmd = fixture.wasm_pack().arg("generate").assert();
 
     let output = cmd.get_output();
 
@@ -20,9 +20,9 @@ fn generate_with_provided_name() {
     let cmd = fixture
         .wasm_pack()
         .arg("generate")
-        .arg("--name ferris")
-        .assert()
-        .failure();
+        .arg("--name")
+        .arg("ferris")
+        .assert();
 
     let output = cmd.get_output();
 
