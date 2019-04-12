@@ -1,4 +1,4 @@
-# wasm-pack build
+# wasm-pack generate
 
 The `wasm-pack generate` command creates a new RustWasm project for you,
 using [`cargo-generate`] under the hood.
