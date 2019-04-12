@@ -30,7 +30,12 @@ This project requires Rust 1.30.0 or later.
 
 - [Development Environment](https://rustwasm.github.io/wasm-pack/book/prerequisites/index.html)
 - [Installation](https://rustwasm.github.io/wasm-pack/installer)
-- [Project Setup](https://rustwasm.github.io/wasm-pack/book/project-setup/index.html)
+
+## ⚡ Quickstart Guide
+
+Visit the [quickstart quide] in our documentation.
+
+[quickstart guide]: https://rustwasm.github.io/wasm-pack/book/quickstart.html
 
 ## 🎙️ Commands
 
@@ -72,7 +77,7 @@ This project was started by [ashleygwilliams] and is co-maintained by [ashleygwi
 ## ⚡ Quickstart Guide
 
 1. Install this tool: `cargo install wasm-pack`
-1. Run `wasm-pack generate`.
+1. Run `wasm-pack new hello-wasm`.
 1. `cd hello-wasm`
 1. Run `wasm-pack build`, optionally, pass a path to a dir or a scope (see above for details)
 1. This tool generates files in a `pkg` dir
