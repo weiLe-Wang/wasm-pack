@@ -14,7 +14,7 @@ pub fn generate(
     install_permitted: bool,
 ) -> result::Result<(), Error> {
     info!("Generating a new rustwasm project...");
-    let download = install::install(
+    let download = install::download_prebuilt_or_cargo_install(
         Tool::CargoGenerate,
         &cache::get_wasm_pack_cache()?,
         "latest",

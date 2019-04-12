@@ -336,12 +336,11 @@ impl Build {
         let lockfile = Lockfile::new(&self.crate_data)?;
         let bindgen_version = lockfile.require_wasm_bindgen()?;
         info!("Installing wasm-bindgen-cli...");
-        let install_permitted = self.mode.install_permitted();
-        let bindgen = install::install(
+        let bindgen = install::download_prebuilt_or_cargo_install(
             Tool::WasmBindgen,
             &self.cache,
             &bindgen_version,
-            install_permitted,
+            self.mode.install_permitted(),
         )?;
         self.bindgen = Some(bindgen);
         info!("Installing wasm-bindgen-cli was successful.");

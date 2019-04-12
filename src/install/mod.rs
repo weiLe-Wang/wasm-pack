@@ -27,7 +27,7 @@ pub use self::tool::Tool;
 /// global install on `$PATH` that fits the bill. Then attempts to download a
 /// tarball from the GitHub releases page, if this target has prebuilt
 /// binaries. Finally, falls back to `cargo install`.
-pub fn install(
+pub fn download_prebuilt_or_cargo_install(
     tool: Tool,
     cache: &Cache,
     version: &str,

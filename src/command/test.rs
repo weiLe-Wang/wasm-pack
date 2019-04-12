@@ -268,7 +268,7 @@ impl Test {
             )
         }
 
-        let dl = install::install(
+        let dl = install::download_prebuilt_or_cargo_install(
             Tool::WasmBindgen,
             &self.cache,
             &bindgen_version,
