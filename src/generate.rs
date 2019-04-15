@@ -16,7 +16,7 @@ pub fn generate(template: &str, name: &str, download: &Download) -> Result<(), f
     cmd.arg("--name").arg(&name);
 
     println!(
-        "{} Generating a new rustwasm worker project with name '{}'...",
+        "{} Generating a new rustwasm project with name '{}'...",
         emoji::SHEEP,
         name
     );
