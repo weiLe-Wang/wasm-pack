@@ -3,17 +3,17 @@ use std::str;
 use utils;
 
 #[test]
-fn generate_with_defaults() {
+fn new_with_no_name_errors() {
     let fixture = utils::fixture::not_a_crate();
-    let cmd = fixture.wasm_pack().arg("generate").assert().failure();
+    fixture.wasm_pack().arg("new").assert().failure();
 }
 
 #[test]
-fn generate_with_provided_name() {
+fn new_with_provided_name() {
     let fixture = utils::fixture::not_a_crate();
     let cmd = fixture
         .wasm_pack()
-        .arg("generate")
+        .arg("new")
         .arg("--name")
         .arg("ferris")
         .assert();

@@ -36,9 +36,11 @@ pub enum Command {
         path: Option<PathBuf>,
     },
 
-    #[structopt(name = "generate")]
+    #[structopt(name = "new")]
     /// 🐑 create a new project with a template
     Generate {
+        /// The name of the project
+        name: String,
         /// The URL to the template
         #[structopt(
             long = "template",
@@ -46,9 +48,6 @@ pub enum Command {
             default_value = "https://github.com/rustwasm/wasm-pack-template"
         )]
         template: String,
-        /// The name of the project
-        #[structopt(long = "name", short = "n")]
-        name: String,
         #[structopt(long = "mode", short = "m", default_value = "normal")]
         /// Should we install or check the presence of binary tools. [possible values: no-install, normal, force]
         mode: InstallMode,

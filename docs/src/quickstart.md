@@ -2,7 +2,7 @@
 
 1. Install `rust` using [`rustup`].
 1. [Install this tool.]
-1. Run `wasm-pack generate`.
+1. Run `wasm-pack new hello-wasm`.
 1. `cd hello-wasm`
 1. Run `wasm-pack build`.
 1. This tool generates files in a `pkg` dir
