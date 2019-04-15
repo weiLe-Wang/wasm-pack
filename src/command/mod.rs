@@ -47,7 +47,7 @@ pub enum Command {
         )]
         template: String,
         /// The name of the project
-        #[structopt(long = "name", short = "n", default_value = "hello-wasm")]
+        #[structopt(long = "name", short = "n")]
         name: String,
         #[structopt(long = "mode", short = "m", default_value = "normal")]
         /// Should we install or check the presence of binary tools. [possible values: no-install, normal, force]
